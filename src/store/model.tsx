@@ -1,5 +1,5 @@
 import axios from "axios";
-import { action, Action, thunk, Thunk } from "easy-peasy";
+import { action, Action, computed, Computed, thunk, Thunk } from "easy-peasy";
 import { updateItem } from "../util";
 
 const BASE_URL = "https://pokeapi.co/api/v2";
@@ -21,6 +21,7 @@ export interface PokemonCardType extends Pokemon {
 export interface PokemonModel {
   pokemons: Pokemon[];
   initPokemon: Action<PokemonModel, Pokemon[]>;
+  pokemonCount: Computed<PokemonModel, number>;
   addPokemon: Action<PokemonModel, Pokemon>;
   deletePokemon: Action<PokemonModel, string>;
   updatePokemon: Action<PokemonModel, Pokemon>;
@@ -32,6 +33,7 @@ export const pokemonStore: PokemonModel = {
   initPokemon: action((state, payload) => {
     state.pokemons = payload;
   }),
+  pokemonCount: computed((state) => state.pokemons.length),
   addPokemon: action((state, payload) => {
     state.pokemons.push(payload);
   }),

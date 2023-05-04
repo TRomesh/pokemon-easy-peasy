@@ -3,7 +3,7 @@ import { useState, FormEvent, useEffect } from "react";
 import { nanoid } from "nanoid";
 import { useStoreActions, useStoreState } from "./store";
 import { Pokemon } from "./store/model";
-
+import PokemonLogo from "./assets/pokémon_logo.svg";
 import PokemonCard from "./components/PokemonCard";
 
 const initState: Pokemon = {
@@ -18,6 +18,7 @@ const initState: Pokemon = {
 function App() {
   const [pokemon, setPokemon] = useState<Pokemon>(initState);
   const pokemons = useStoreState((state) => state.pokemons);
+  const pokemonCount = useStoreState((state) => state.pokemonCount);
   const getPokemons = useStoreActions((actions) => actions.getPokemons);
   const addPokemon = useStoreActions((actions) => actions.addPokemon);
   const deletePokemon = useStoreActions((actions) => actions.deletePokemon);
@@ -38,7 +39,7 @@ function App() {
 
   return (
     <div className="container mx-auto mt-8">
-      <h1 className="text-3xl font-bold mb-4">Pokemon</h1>
+      <img src={PokemonLogo} className="mx-auto" />
       <form onSubmit={handleFormSubmit} className="max-w-md mx-auto">
         <div className="w-full px-3 mb-6 md:mb-0">
           <label htmlFor="name" className="block text-gray-700 font-bold mb-2">
@@ -137,20 +138,27 @@ function App() {
       {pokemons.length === 0 ? (
         <p>No pokemons yet</p>
       ) : (
-        <ul className="list-disc">
-          {pokemons.map(({ id, name, weight, height, power, description }) => (
-            <PokemonCard
-              key={id}
-              id={id}
-              name={name}
-              weight={weight}
-              height={height}
-              power={power}
-              description={description}
-              onDelete={handleTodoDelete}
-            />
-          ))}
-        </ul>
+        <>
+          <h1 className="text-3xl font-bold mb-4">
+            Pokemon count : {pokemonCount}
+          </h1>
+          <ul className="list-disc">
+            {pokemons.map(
+              ({ id, name, weight, height, power, description }) => (
+                <PokemonCard
+                  key={id}
+                  id={id}
+                  name={name}
+                  weight={weight}
+                  height={height}
+                  power={power}
+                  description={description}
+                  onDelete={handleTodoDelete}
+                />
+              )
+            )}
+          </ul>
+        </>
       )}
     </div>
   );
