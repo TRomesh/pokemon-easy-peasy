@@ -79,12 +79,12 @@ function App() {
               Weight
             </label>
             <input
-              type="text"
+              type="number"
               id="weight"
               name="weight"
               value={pokemon.weight}
               onChange={(e) =>
-                setPokemon({ ...pokemon, weight: parseInt(e.target.value) })
+                setPokemon({ ...pokemon, weight: e.target.valueAsNumber })
               }
               className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
               required
@@ -98,12 +98,12 @@ function App() {
               Height
             </label>
             <input
-              type="text"
+              type="number"
               id="height"
               name="height"
               value={pokemon.height}
               onChange={(e) =>
-                setPokemon({ ...pokemon, height: parseInt(e.target.value) })
+                setPokemon({ ...pokemon, height: e.target.valueAsNumber })
               }
               className="appearance-none block w-full bg-gray-200 text-gray-700 border border-gray-200 rounded py-3 px-4 mb-3 leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
               required
