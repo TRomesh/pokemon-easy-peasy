@@ -35,7 +35,9 @@ const PokemonCard = ({
         {onEdit ? (
           <button
             className="bg-blue-500 text-white px-4 py-2 rounded-md mr-2"
-            //onClick={onEdit}
+            onClick={() =>
+              onEdit({ id, name, height, weight, power, description })
+            }
           >
             Edit
           </button>

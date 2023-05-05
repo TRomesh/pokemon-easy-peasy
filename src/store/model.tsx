@@ -19,23 +19,25 @@ export interface PokemonCardType extends Pokemon {
 }
 
 export interface PokemonModel {
+  pokemon: Pokemon | null;
   pokemons: Pokemon[];
-  initPokemon: Action<PokemonModel, Pokemon[]>;
-  pokemonCount: Computed<PokemonModel, number>;
+  getPokemons: Thunk<PokemonModel>;
   addPokemon: Action<PokemonModel, Pokemon>;
   deletePokemon: Action<PokemonModel, string>;
+  initPokemon: Action<PokemonModel, Pokemon[]>;
+  pokemonCount: Computed<PokemonModel, number>;
   updatePokemon: Action<PokemonModel, Pokemon>;
-  getPokemons: Thunk<PokemonModel>;
 }
 
 export const pokemonStore: PokemonModel = {
+  pokemon: null,
   pokemons: [],
   initPokemon: action((state, payload) => {
     state.pokemons = payload;
   }),
-  pokemonCount: computed((state) => state.pokemons.length),
+  pokemonCount: computed((state) => state.pokemons.length), // computes the length of the pokemon array
   addPokemon: action((state, payload) => {
-    state.pokemons.push(payload);
+    state.pokemons.unshift(payload);
   }),
   deletePokemon: action((state, id) => {
     state.pokemons = state.pokemons.filter(
@@ -46,15 +48,16 @@ export const pokemonStore: PokemonModel = {
     state.pokemons = updateItem(state.pokemons, payload);
   }),
   getPokemons: thunk(async (action) => {
+    // thunk is used to encapsulate side effects and it allows dispatching other actions
     const {
       data: { results },
     } = await axios.get(`${BASE_URL}/pokemon`);
     const pokemons = results.map((data: { name: string; url: string }) => {
       return {
-        id: data.url.split("/")?.[data.url.split("/").length - 2],
+        id: data.url.split("/")?.[data.url.split("/").length - 2], // extract the id from the url
         name: data.name,
       };
     }) as Pokemon[];
-    action.initPokemon(pokemons);
+    action.initPokemon(pokemons); // dispatch another action (initPokemon action)
   }),
 };
